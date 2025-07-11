@@ -2,9 +2,14 @@ package sep;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,17 +19,19 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class AppUI extends JFrame{
+public class AppUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	// Attributes for the UI components
-	private JLabel titleLabel = new JLabel("Script Encryption", JLabel.CENTER), copyrightLabel = new JLabel("© 2025 by river0077", JLabel.CENTER);
-	private JLabel passwordLabel = new JLabel("Password:", JLabel.CENTER), keyLabel = new JLabel("Key:          ", JLabel.CENTER);
+	private JLabel titleLabel = new JLabel("Script Encryption", JLabel.CENTER),
+			copyrightLabel = new JLabel("© 2025 by river0077", JLabel.CENTER);
+	private JLabel passwordLabel = new JLabel("Password:", JLabel.CENTER),
+			keyLabel = new JLabel("Key:          ", JLabel.CENTER);
 	private JTextField passwordField, keyField, resultField;
 	private JButton encryptButton, decryptButton;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenuItem exit = new JMenuItem("Exit"), help = new JMenuItem("Help"), about = new JMenuItem("About");
-	
+
 	public AppUI() {
 		// UI constructor
 		setTitle("Script Encryption");
@@ -38,7 +45,7 @@ public class AppUI extends JFrame{
 		fileMenu.add(exit);
 		// Action listeners for menu items
 		exit.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -46,11 +53,11 @@ public class AppUI extends JFrame{
 			}
 		});
 		help.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				HelpFrame helpFrame = new HelpFrame();
+				helpFrame.setVisible(true);
 			}
 		});
 		add(new UIPanel(), BorderLayout.CENTER);
@@ -58,9 +65,10 @@ public class AppUI extends JFrame{
 		setResizable(false);
 		setVisible(true);
 	}
+
 	private class UIPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
-		
+
 		public UIPanel() {
 			// UI panel constructor
 			setLayout(new BorderLayout());
@@ -81,7 +89,7 @@ public class AppUI extends JFrame{
 			encryptButton = new JButton("Encrypt");
 			// Action listener for the encrypt button
 			encryptButton.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
@@ -112,7 +120,7 @@ public class AppUI extends JFrame{
 			decryptButton = new JButton("Decrypt");
 			// Action listener for the decrypt button
 			decryptButton.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
@@ -152,6 +160,45 @@ public class AppUI extends JFrame{
 			add(titleLabel, BorderLayout.NORTH);
 			add(inputPanel, BorderLayout.CENTER);
 			add(panelOther, BorderLayout.SOUTH);
+		}
+	}
+
+	// HelpFrame class to display the help content in a new window
+	private class HelpFrame extends JFrame {
+		private static final long serialVersionUID = 1L;
+
+		public HelpFrame() {
+			setTitle("Help");
+			setSize(800, 600);
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setContentPane(new HelpPanel());
+			setLocationRelativeTo(null);
+		}
+	}
+
+	// HelpPanel class to display the help content
+	private class HelpPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		private Image backgroundImage;
+
+		public HelpPanel() {
+			setLayout(new BorderLayout());
+			try {
+				backgroundImage = ImageIO.read(new File("src/resources/help.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+
+				System.err.println("Could not load help.png. Make sure the file exists at src/resources/help.png");
+				backgroundImage = null;
+			}
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if (backgroundImage != null) {
+				g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+			}
 		}
 	}
 }
