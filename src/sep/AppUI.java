@@ -60,6 +60,20 @@ public class AppUI extends JFrame {
 				helpFrame.setVisible(true);
 			}
 		});
+		about.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JFrame aboutFrame = new JFrame("About");
+				aboutFrame.setSize(300, 150);
+				aboutFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				JLabel aboutLabel = new JLabel("<html><center>Script Encryption<br>Version 1.0<br>© 2025 by river0077</center></html>", JLabel.CENTER);
+				aboutFrame.add(aboutLabel);
+				aboutFrame.setLocationRelativeTo(null);
+				aboutFrame.setVisible(true);
+			}
+		});
 		add(new UIPanel(), BorderLayout.CENTER);
 		setLocationRelativeTo(null);
 		setResizable(false);
