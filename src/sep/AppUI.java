@@ -263,7 +263,7 @@ public class AppUI extends JFrame {
 				backgroundImage = null;
 			}
 		}
-
+		// Override paintComponent to draw the background image
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
