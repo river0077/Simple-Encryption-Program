@@ -1,6 +1,7 @@
 package sep;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -8,8 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,11 +23,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 public class AppUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	// Attributes for the UI components
-	private JLabel titleLabel = new JLabel("Script Encryption", JLabel.CENTER),
+	private JLabel titleLabel = new JLabel("Simple Encryption Program", JLabel.CENTER),
 			copyrightLabel = new JLabel("© 2025 by river0077", JLabel.CENTER);
 	private JLabel passwordLabel = new JLabel("Password:", JLabel.CENTER),
 			keyLabel = new JLabel("Key:          ", JLabel.CENTER);
@@ -34,8 +40,8 @@ public class AppUI extends JFrame {
 
 	public AppUI() {
 		// UI constructor
-		setTitle("Script Encryption");
-		setSize(400, 225);
+		setTitle("Simple Encryption Program");
+		setSize(425, 235);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setJMenuBar(menuBar = new JMenuBar());
@@ -68,7 +74,7 @@ public class AppUI extends JFrame {
 				JFrame aboutFrame = new JFrame("About");
 				aboutFrame.setSize(300, 150);
 				aboutFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				JLabel aboutLabel = new JLabel("<html><center>Script Encryption<br>Version 1.0<br>© 2025 by river0077</center></html>", JLabel.CENTER);
+				JLabel aboutLabel = new JLabel("<html><center>Simple Encryption Program<br>Version 1.0<br>© 2025 by river0077</center></html>", JLabel.CENTER);
 				aboutFrame.add(aboutLabel);
 				aboutFrame.setLocationRelativeTo(null);
 				aboutFrame.setVisible(true);
@@ -76,7 +82,7 @@ public class AppUI extends JFrame {
 		});
 		add(new UIPanel(), BorderLayout.CENTER);
 		setLocationRelativeTo(null);
-		setResizable(false);
+		setResizable(true);
 		setVisible(true);
 	}
 
@@ -85,22 +91,84 @@ public class AppUI extends JFrame {
 
 		public UIPanel() {
 			// UI panel constructor
-			setLayout(new BorderLayout());
-			passwordField = new JTextField(30);
-			keyField = new JTextField(30);
-			JPanel inputPanel = new JPanel();
-			inputPanel.setLayout(new BorderLayout());
-			JPanel passPanel = new JPanel();
-			passPanel.add(passwordLabel);
-			passPanel.add(passwordField);
-			JPanel keyPanel = new JPanel();
-			keyPanel.add(keyLabel);
-			keyPanel.add(keyField);
-			inputPanel.add(passPanel, BorderLayout.NORTH);
-			inputPanel.add(keyPanel, BorderLayout.CENTER);
-			JPanel panelOther = new JPanel();
-			panelOther.setLayout(new BorderLayout());
+			setLayout(new GridBagLayout());
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.insets = new Insets(5, 5, 5, 5);
+
+			// Title Label
+			gbc.gridx = 0;
+			gbc.gridy = 0;
+			gbc.gridwidth = 2;
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.anchor = GridBagConstraints.CENTER;
+			add(titleLabel, gbc);
+
+			// Password Label and Field
+			gbc.gridx = 0;
+			gbc.gridy = 1;
+			gbc.gridwidth = 1;
+			gbc.fill = GridBagConstraints.NONE;
+			gbc.anchor = GridBagConstraints.EAST;
+			add(passwordLabel, gbc);
+
+			passwordField = new JTextField(20);
+			gbc.gridx = 1;
+			gbc.gridy = 1;
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.weightx = 1.0;
+			add(passwordField, gbc);
+
+			// Key Label and Field
+			gbc.gridx = 0;
+			gbc.gridy = 2;
+			gbc.fill = GridBagConstraints.NONE;
+			gbc.weightx = 0;
+			gbc.anchor = GridBagConstraints.EAST;
+			add(keyLabel, gbc);
+
+			keyField = new JTextField(20);
+			gbc.gridx = 1;
+			gbc.gridy = 2;
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.weightx = 1.0;
+			add(keyField, gbc);
+
+			// Buttons Panel
+			JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 			encryptButton = new JButton("Encrypt");
+			decryptButton = new JButton("Decrypt");
+			buttonPanel.add(encryptButton);
+			buttonPanel.add(decryptButton);
+
+			gbc.gridx = 0;
+			gbc.gridy = 3;
+			gbc.gridwidth = 2;
+			gbc.fill = GridBagConstraints.NONE;
+			gbc.weightx = 0;
+			gbc.anchor = GridBagConstraints.CENTER;
+			add(buttonPanel, gbc);
+
+			// Result Field
+			resultField = new JTextField(25);
+			resultField.setEditable(false);
+			resultField.setHorizontalAlignment(JTextField.CENTER);
+			resultField.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Result", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION));
+			gbc.gridx = 0;
+			gbc.gridy = 4;
+			gbc.gridwidth = 2;
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.weightx = 1.0;
+			add(resultField, gbc);
+
+			// Copyright Label
+			gbc.gridx = 0;
+			gbc.gridy = 5;
+			gbc.gridwidth = 2;
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.weighty = 1.0;
+			gbc.anchor = GridBagConstraints.SOUTH;
+			add(copyrightLabel, gbc);
+
 			// Action listener for the encrypt button
 			encryptButton.addActionListener(new ActionListener() {
 
@@ -117,8 +185,8 @@ public class AppUI extends JFrame {
 						resultField.setText("Password and key cannot contain spaces.");
 						return;
 					}
-					if (password.length() < 4 || password.length() > 15) {
-						resultField.setText("Password must be between 4 and 15 characters long.");
+					if (password.length() < 4 || password.length() > 50) {
+						resultField.setText("Password must be between 4 and 50 characters long.");
 						return;
 					}
 					if (key.length() != 4) {
@@ -127,12 +195,11 @@ public class AppUI extends JFrame {
 					}
 					String encrypted = Script_Encryption.encrypt(password, key);
 					resultField.setText(encrypted);
+					resultField.setHorizontalAlignment(JTextField.CENTER);
 					revalidate();
 					repaint();
 				}
 			});
-			decryptButton = new JButton("Decrypt");
-			// Action listener for the decrypt button
 			decryptButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -148,8 +215,8 @@ public class AppUI extends JFrame {
 						resultField.setText("Password and key cannot contain spaces.");
 						return;
 					}
-					if (password.length() < 4 || password.length() > 30) {
-						resultField.setText("Password must be between 4 and 30 characters long.");
+					if (password.length() < 4 || password.length() > 50) {
+						resultField.setText("Password must be between 4 and 50 characters long.");
 						return;
 					}
 					if (key.length() != 4) {
@@ -158,22 +225,12 @@ public class AppUI extends JFrame {
 					}
 					String decrypted = Script_Encryption.decrypt(password, key);
 					resultField.setText(decrypted);
+					resultField.setHorizontalAlignment(JTextField.CENTER);
 					System.out.println("Decrypted: " + decrypted);
 					revalidate();
 					repaint();
 				}
 			});
-			JPanel buttonPanel = new JPanel();
-			buttonPanel.setLayout(new FlowLayout());
-			buttonPanel.add(encryptButton);
-			buttonPanel.add(decryptButton);
-			panelOther.add(buttonPanel, BorderLayout.NORTH);
-			resultField = new JTextField(20);
-			panelOther.add(resultField, BorderLayout.CENTER);
-			panelOther.add(copyrightLabel, BorderLayout.SOUTH);
-			add(titleLabel, BorderLayout.NORTH);
-			add(inputPanel, BorderLayout.CENTER);
-			add(panelOther, BorderLayout.SOUTH);
 		}
 	}
 
